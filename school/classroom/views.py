@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, FormView, CreateView
+from django.views.generic import TemplateView, FormView, CreateView, ListView, DetailView
 from classroom.models import Teacher
 from classroom.forms import ContactForm
 
@@ -16,7 +16,22 @@ class TeacherCreateView(CreateView):
     #model_form.html
     #.save() 
     fields = "__all__" #Para parametros específicos, usar ["par1", "par2"...]
-    success_url = reverse_lazy('classroom:thankyou')
+    success_url  = reverse_lazy('classroom:thankyou')
+
+class TeacherListView(ListView):
+    #model_list.html
+    model = Teacher
+    queryset = Teacher.objects.order_by('first_name')
+    
+    context_object_name = "teacher_list"
+
+class TeacherDetailView(DetailView):
+    # RETURN ONLY ONE MODEL ENTRY PK
+    # model_detail.html
+    model = Teacher
+    # PK --> {{teacher}}
+
+
 
 class ContactFormView(FormView):
     form_class = ContactForm
